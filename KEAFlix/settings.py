@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-t^v7q)0w=)aky0$gq=l6a%6ddu523nk0#%p($8h-ce@7q-$3*%
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'Mediam8.azurewebsites.net', 'https://mediam8.azurewebsites.net'
+    'Mediam8.azurewebsites.net', 'https://mediam8.azurewebsites.net', '*'
 ]
        
 
