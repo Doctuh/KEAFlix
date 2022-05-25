@@ -10,31 +10,30 @@
 {% endblock other %}
 
 {% block body_block %}
-    <body class="body-bg min-h-screen pt-12 md:pt-20 pb-6 px-2 md:px-0" style="font-family:'Lato',sans-serif;">
-        <main class="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl" style="margin-top:8%;">
-            <section>
-                <h3 class="font-bold text-2xl text-center">Upload film</h3>
-            </section>
-    
-            <section class="mt-5">
-                <form class="flex flex-col" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-    
-    
-                    <div class="mb-6 pt-3 rounded bg-white">
-                        <label class="block text-gray-700 text-sm font-bold mb-2 ml-3">Titel</label>
-                        <input type="text" name="title" id="id_title" placeholder="Titel" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
-                    </div>
-                    <div class="mb-6 pt-3 rounded bg-white">
-                        <input type="file" name="file" id = "id_file">
-                    </div>
-                    <div class="text-center">
-                        <button class="w-32 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">
-                            Upload film
-                        </button>
-                    </div>
-                </form>
-            </section>
-        </main>
-    </body>
+{% include "partials/_navbar.html" %}
+    <header class="object-fill bg-cover bg-center min-h-screen max-h-screen showcase border-gray-600 flex justify-center items-center bg-no-repeat"  style="background-image: url('{% static 'index_poster.jpg' %}');">            <main class="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl opacity-90" style="">
+                <section>
+                    <h3 class="font-bold text-2xl text-center">Upload film</h3>
+                </section>
+        
+                <section class="mt-5">
+                    <form class="flex flex-col" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+        
+        
+                        <div class="mb-6 pt-3 rounded bg-white">
+                            <input type="text" name="title" id="id_title" placeholder="Titel" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-red-600 transition duration-500 px-3 pb-3">
+                        </div>
+                        <div class="mb-6 pt-3 rounded bg-white">
+                            <input type="file" name="file" id = "id_file">
+                        </div>
+                        <div class="text-center">
+                            <button class="w-32 bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">
+                                Upload film
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </main>
+    </header>
 {% endblock body_block %}

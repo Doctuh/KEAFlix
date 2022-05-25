@@ -10,20 +10,58 @@ Alle film
 {% endblock other %}
 
 {% block body_block %}
-
-<main class='bg-primary_black min-h-screen w-full'>
-    {% include "partials/_navbar.html" %}
+    
+    <!-- NAVBAR -->
+    <nav class="p-5 md:flex md:items-center md:justify-between fixed w-full z-10 top-0" id="nav">
+        <div>
+            <span class="text-2x1 font-[Poppins] cursor-pointer">
+                <a href="{% url 'core:home' %}">
+                    <p class="text-3xl font-mono text-white">MediaM8</p>
+                </a>
+            </span>
+        </div>
+        
+        <ul class="md:flex md:items-center">
+            
+            {% if request.user.is_authenticated %}
+            <li class="mx-4">
+                <button class="bg-primary_red text-white py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
+                    <a href="{% url 'core:profiles' %}"> Vælg profil </a>
+                </button>
+            </li>
+            <form action="{% url 'account_logout' %}" method="post">
+                {% csrf_token %}
+                <button class="bg-primary_red text-white py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
+                    Sign out
+                </button>
+            </form>
+            <a href="{% url 'upload_film' %}">
+            <button class="bg-primary_red text-white py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
+                Upload film
+            </button>
+            </a>
+            {% else %}
+            <li class="mx-4">
+                <button class="text-white bg-primary_red py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
+                    <a href="{% url 'account_login' %}"> Sign in</a>
+                </button>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <!-- NAVBAR END -->
+    
     {% if show_case %}
-    <section class="h-screen relative bg-no-repeat pb-8 pl-6 flex items-end bg-cover"
+        <section class="h-screen relative bg-no-repeat pb-8 flex items-end bg-cover"
         style="background-image: url('{{show_case.backdrop_path}}');">
         <div>
-            <h2 class="text-6xl font-semibold text-white my-4">
+            <h2 class="text-6xl font-semibold text-white my-4 pl-6">
                 {{show_case.original_title}}
             </h2>
-            <p class=" w-11/12 md:w-5/12 font-medium text-white my-4">
+            <p class=" w-11/12 md:w-5/12 font-medium text-white my-4 pl-6">
                 {{show_case.tagline | slice:":50"}}
             </p>
-            <div class="flex my-4">
+            <div class="flex my-4 pl-6">
                 <a href="{% url 'core:movie_play' movie_id=show_case.uuid %}">
                     <button class="flex items-center bg-white py-2 px-5 rounded-md" style='color:black;'>
                         <ion-icon name="play" class="text-2xl"></ion-icon>
@@ -41,7 +79,6 @@ Alle film
                         </span>
                     </button>
                 </a>
-
             </div>
         </div>
         {% endif %}
@@ -62,14 +99,21 @@ Alle film
                 </a>
                 {% endif %}
                 {% endfor %}
-
-
-
-
             </div>
         </div>
     </section>
-
 </main>
 
+<script>
+    const nav = document.querySelector('nav')
+    document.addEventListener("scroll",e=>{
+        if(scrollY>100){
+            nav.classList.add('navbar-fixed')
+            
+        }else{
+            nav.classList.remove('navbar-fixed')
+        }
+    })
+</script>
 {% endblock body_block %}
+

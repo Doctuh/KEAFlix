@@ -10,12 +10,13 @@
 {% endblock other %}
 
 {% block body_block %}
+<body class="bg-slate-800">
     {% include "partials/_navbar.html" %}
-    
-    <body class="body-bg min-h-screen pt-12 md:pt-20 pb-6 px-2 md:px-0" style="font-family:'Lato',sans-serif;">
-        <main class="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl"style="margin-top:8%;">
+</body>
+    <body class="body-bg min-h-screen pt-12 md:pt-20 pb-6 px-2 md:px-0" style="font-family:'Lato',sans-serif;background-image: url('{% static 'index_poster.jpg' %}');">
+        <main class="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl"style="margin-top:13%;">
             <section>
-                <h3 class="font-bold text-2xl">Welcome to KEAFlix</h3>
+                <h3 class="font-bold text-2xl">Welcome to MediaM8</h3>
                 <p class="text-gray-600 pt-2">Sign up below</p>
             </section>
 
@@ -32,17 +33,17 @@
 
                     <div class="mb-6 pt-3 rounded bg-gray-200">
                         <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="email">Email</label>
-                        <input type="email" name="email" id="id_email" placeholder = "Enter your email address" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+                        <input type="email" name="email" id="id_email" placeholder = "Enter your email address" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-red-600 transition duration-500 px-3 pb-3">
                     </div>
                     <div class="mb-6 pt-3 rounded bg-gray-200">
                         <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="password">Password</label>
-                        <input type="password" name="password1" id="id_password1" placeholder = "Enter your password" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+                        <input type="password" name="password1" id="id_password1" placeholder = "Enter your password" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-red-600 transition duration-500 px-3 pb-3">
                     </div>
                     <div class="mb-6 pt-3 rounded bg-gray-200">
                         <label class="block text-gray-700 text-sm font-bold mb-2 ml-3" for="password">Confirm Password</label>
-                        <input type="password" name="password2" id="id_password2" placeholder = "Confirm your password" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3">
+                        <input type="password" name="password2" id="id_password2" placeholder = "Confirm your password" class="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-red-600 transition duration-500 px-3 pb-3">
                     </div>
-                    <button class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">Sign In</button>
+                    <button class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">Sign Up</button>
                 </form>
             </section>
         </main>

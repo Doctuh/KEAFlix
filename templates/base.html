@@ -12,32 +12,10 @@
     
     {% endblock other %}
 </head>
-<body class="bg-slate-800">
     {% block body_block %}
+    
+
     {% endblock body_block %}
 
-    <script>
-        $(document).ready(function(){
-            $(window).on('scroll', function() {
-                var scrollTop     = $(window).scrollTop(),
-                    thirdLayerOffset = $('#thirdLayer').offset().top,
-                    distanceTop      = (thirdLayerOffset - scrollTop);
-                if(distanceTop > 0) {
-                    if(distanceTop < 200 && distanceTop >= 100)
-                        $('#navMenu').css({ opacity: (distanceTop-100)/100});
-                    else if(distanceTop <100)
-                        $('#navMenu').css({ opacity: 0});
-                    else 
-                        $('#navMenu').css({ opacity: 1});
-                }
-                else if (distanceTop <= 0) {
-                    $('#navMenu').css({
-                        'opacity': 0
-                    })
-                }
-            });
-        });
-    </script>
-</body>
 </html>
 
