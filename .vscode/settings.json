@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/ed48b494-2ddd-44d6-a98a-9a92c5c8729d/microsoft.web/sites/subscriptions/ed48b494-2ddd-44d6-a98a-9a92c5c8729d/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/MediaM8",
+    "appService.deploySubpath": "."
+}
