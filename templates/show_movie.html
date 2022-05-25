@@ -8,15 +8,38 @@
 {% block other %}
 
 {% endblock other %}
-<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+
 {% block body_block %}
     {% include "partials/_navbar.html" %}
-    <main class='bg-primary_black h-full w-full '>
+    <head>
+        <link href="https://vjs.zencdn.net/7.19.2/video-js.css" rel="stylesheet" />
+    </head>
+
+        <script src="https://vjs.zencdn.net/7.19.2/video.min.js"></script>
         
-        <video class="w-full h-screen player" preload="metadata" poster="{{movie.backdrop_path.url}}">
-            <source src="{{movie.file.url}}">
-        </video>
-        
-    </main>
+        <section class='bg-primary_black  min-h-screen flex justify-center py-10 paddin-top: 50px'>
+            <div class="p-8 w-10/12 relative">
+                    <video
+                    id="my-video"
+                    class="video-js vjs-big-play-centered vjs-fluid"
+                    controls
+                    preload="auto"
+                    width="640"
+                    height="264"
+                    poster="{{movie.backdrop_path}}"
+                    data-setup="{}"
+                    >
+                    <source src="{{movie.file.url}}" type="video/mp4" />
+                    <source src="{{movie.file.url}}" type="video/webm" />
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a
+                        web browser that
+                        <a href="https://videojs.com/html5-video-support/" target="_blank"
+                        >supports HTML5 video</a
+                        >
+                    </p>
+                    </video>
+            </div>
+        </section>
 
 {% endblock body_block %}
