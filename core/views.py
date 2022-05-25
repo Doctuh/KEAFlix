@@ -84,25 +84,34 @@ class UploadMovie(View):
             movie.tagline = tagline
             
             movies = Movie.objects.all()
-            db_genres = Genre.objects.all()      
-            
+            db_genre = ""
             for mov in movies:
                 if mov.original_title == movie.original_title:
                     duplicate_movie == True
-              
-            print("Genres are the following: " + str(genres))
+                    return redirect('core:profiles')
+                
+            print("Added movie: " + str(movie.original_title) + " to database")            
             
             for genre in genres:
+                try:
+                    genre_to_save = Genre.objects.get(genre=genre)
+                except Genre.DoesNotExist:
+                    print(genre + " is not in database, adding an entry for it!")
+                    genre_to_save = Genre()
+                    genre_to_save.genre = genre
+                    genre_to_save.save()
+                    print("Added genre: " + str(genre) + " to database")                     
+                    pass
+                                
+                print(genre_to_save, genre)
+                
                 if not duplicate_movie:
                     movie.save()
-                    if genre not in db_genres:
-                        genre_to_save = Genre()
-                        genre_to_save.genre = genre
-                        genre_to_save.save()
-                        genre_to_save.movies.add(movie)
+                    genre_to_save.movies.add(movie)
+                    print("Added movie: " + str(movie) + " to: " + str(genre) + " relationship") 
+                    genre_to_save = Genre.objects.get(genre=genre)
+                    genre_to_save.movies.add(movie)
                         
-                elif duplicate_movie:
-                    return redirect('core:profiles')
             return redirect('core:profiles')
            
 class ProfileList(View):
