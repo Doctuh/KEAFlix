@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KEAFlix | {% block title %}{% endblock title %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 </head>
 {% load static %}
  <!-- NAVBAR -->
-    <nav class="p-5 shadow md:flex md:items-center md:justify-between navMenu" id="navMenu" style="background-color:#0d0d0d;width:100%;">
+ <nav class="p-5 md:flex md:items-center md:justify-between fixed w-full z-10 top-0" id="nav">
         <div>
             <span class="text-2x1 font-[Poppins] cursor-pointer">
                 <a href="{% url 'core:home' %}">
@@ -24,24 +25,26 @@
             {% if request.user.is_authenticated %}
             <li class="mx-4">
                 <button class="bg-primary_red text-white py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
-                    <a href="{% url 'core:profiles' %}"> Vælg profil </a>
+                    <a href="{% url 'core:profiles' %}"> <ion-icon name="people-outline"></ion-icon> </a>
                 </button>
             </li>
             <form action="{% url 'account_logout' %}" method="post">
                 {% csrf_token %}
+            <li class="mx-4">
                 <button class="bg-primary_red text-white py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
-                    Sign out
+                    <ion-icon name="log-out-outline"></ion-icon>
                 </button>
+            </li>
             </form>
             <a href="{% url 'upload_film' %}">
             <button class="bg-primary_red text-white py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
-                Upload film
+                <ion-icon name="cloud-upload-outline"></ion-icon>
             </button>
             </a>
             {% else %}
             <li class="mx-4">
                 <button class="text-white bg-primary_red py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
-                    <a href="{% url 'account_login' %}"> Sign in</a>
+                    <a href="{% url 'account_login' %}"> <ion-icon name="log-in-outline"></ion-icon></a>
                 </button>
             </li>
             {% endif %}

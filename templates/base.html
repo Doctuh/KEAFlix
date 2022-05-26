@@ -15,6 +15,17 @@
     {% block body_block %}
     
 
+    <script>
+        const nav = document.querySelector('nav')
+        document.addEventListener("scroll",e=>{
+            if(scrollY>100){
+                nav.classList.add('navbar-fixed')
+                
+            }else{
+                nav.classList.remove('navbar-fixed')
+            }
+        })
+    </script>
     {% endblock body_block %}
 
 </html>

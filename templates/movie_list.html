@@ -26,18 +26,20 @@ Alle film
             {% if request.user.is_authenticated %}
             <li class="mx-4">
                 <button class="bg-primary_red text-white py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
-                    <a href="{% url 'core:profiles' %}"> Vælg profil </a>
+                    <a href="{% url 'core:profiles' %}"> <ion-icon name="people-outline"></ion-icon> </a>
                 </button>
             </li>
             <form action="{% url 'account_logout' %}" method="post">
                 {% csrf_token %}
+            <li class="mx-4">
                 <button class="bg-primary_red text-white py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
-                    Sign out
+                    <ion-icon name="log-out-outline"></ion-icon>
                 </button>
+            </li>
             </form>
             <a href="{% url 'upload_film' %}">
             <button class="bg-primary_red text-white py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
-                Upload film
+                <ion-icon name="cloud-upload-outline"></ion-icon>
             </button>
             </a>
             {% else %}
@@ -81,9 +83,7 @@ Alle film
                 </a>
             </div>
         </div>
-        {% endif %}
     </section>
-    
     <section class='bg-primary_black  min-h-screen flex justify-center py-10'>
         <div class="p-8 w-10/12 relative">
             <h2 class="text-gray-200 text-2xl font-medium">
@@ -102,7 +102,16 @@ Alle film
             </div>
         </div>
     </section>
-</main>
+</body>
+{% else %}
+    <header class="object-fill bg-cover bg-center min-h-screen max-h-screen showcase border-gray-600 flex justify-center items-center bg-no-repeat"  style="background-image: url('{% static 'index_poster.jpg' %}');">
+        <div class="z-10 h-full py-32 md:py-0 text-gray-100 text-center flex items-center flex-col">
+            <h1 class="font-semibold text-4xl md:text-5xl w-10/12 md:w-3/4 text-center">
+                There are currently no movies in your database, please upload some to continue.
+            </h1>
+        </div>
+    </header>
+{% endif %}
 
 <script>
     const nav = document.querySelector('nav')
