@@ -13,9 +13,6 @@ MOVIE_CHOICES = (
     ('serie', 'Serie'),
     ('film', 'Film'),
 )
-class CustomUser(AbstractUser):
-    profiles = models.ManyToManyField('Profile',blank=True)
-
 
 class Profile(models.Model):
     name      = models.CharField(max_length=255)
@@ -39,6 +36,10 @@ class Movie(models.Model):
     type        =   models.CharField(max_length = 10,choices=MOVIE_CHOICES, blank = True,null = True)
     thumbnail   =   models.ImageField(upload_to = 'thumbnails',default='/thumbnails/default_thumbnail.jpg', blank = True,null = True)
     age_limit   =   models.CharField(max_length = 10, choices=AGE_CHOICES, blank = True,null = True)
+    
+class CustomUser(AbstractUser):
+    profiles = models.ManyToManyField('Profile',blank=True)
+    movies   = models.ManyToManyField(Movie)
 
 class Genre(models.Model):
     genre        =   models.CharField(max_length = 10, blank = True,null = True)
