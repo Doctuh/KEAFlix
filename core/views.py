@@ -196,3 +196,26 @@ class GenresList(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return render(request, 'genre_list.html')
+
+class Search(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:    
+            search_query =  request.GET.get('search')     
+            print("Search query is: " + str(search_query)) 
+            try:
+                status = Movie.objects.filter(original_title__contains=search_query)
+                movie_found = True
+            except Movie.DoesNotExist:
+                status = None
+            try:
+                status = Genre.objects.filter(genre__contains=search_query)
+                genre_found = True
+            except Genre.DoesNotExist:
+                status = None
+                
+            if  movie_found:    
+                return render(request,"search.html",{"movies":status})
+            elif genre_found:
+                return render(request,"search.html",{"genres":status})
+        else:
+            return render(request,"search.html",{})

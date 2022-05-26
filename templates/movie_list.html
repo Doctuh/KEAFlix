@@ -19,11 +19,20 @@ Alle film
                     <p class="text-3xl font-mono text-white">MediaM8</p>
                 </a>
             </span>
+            
         </div>
         
         <ul class="md:flex md:items-center">
-            
             {% if request.user.is_authenticated %}
+            <li class="mx-8">
+                <form name="search_form" method = "GET" action="{% url 'core:search' %}">
+                    <input type="text" class="bg-gray-200 rounded text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-red-600 transition duration-500", name="search" placeholder="Search for genre or movie">
+                        <button class="bg-primary_red text-white py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
+                            <ion-icon name="search-outline"></ion-icon>
+                        </button>
+                    </input>
+                </form>
+            </li>
             <li class="mx-4">
                 <button class="bg-primary_red text-white py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
                     <a href="{% url 'core:profiles' %}"> <ion-icon name="people-outline"></ion-icon> </a>
