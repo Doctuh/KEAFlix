@@ -5,7 +5,7 @@ from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from core.forms import ProfileForm,MovieForm
-from core.models import Profile, Movie, Genre
+from core.models import Profile, Movie, Genre, CustomUser
 import requests
 import json
 
@@ -60,7 +60,7 @@ class UploadMovie(View):
 
     def post(self,request,*args,**kwargs):
         form = MovieForm(request.POST, request.FILES or None)
-        
+        user = request.user
         duplicate_movie = False
         
         print(form.is_valid())
@@ -85,12 +85,12 @@ class UploadMovie(View):
             
             movies = Movie.objects.all()
             db_genre = ""
+            
             for mov in movies:
                 if mov.original_title == movie.original_title:
-                    duplicate_movie == True
-                    return redirect('core:profiles')
-                
-            print("Added movie: " + str(movie.original_title) + " to database")            
+                    duplicate_movie = True                
+            
+            print("movie dup?: " + str(duplicate_movie))
             
             for genre in genres:
                 try:
@@ -105,14 +105,27 @@ class UploadMovie(View):
                                 
                 print(genre_to_save, genre)
                 
-                if not duplicate_movie:
-                    movie.save()
-                    genre_to_save.movies.add(movie)
-                    print("Added movie: " + str(movie) + " to: " + str(genre) + " relationship") 
-                    genre_to_save = Genre.objects.get(genre=genre)
-                    genre_to_save.movies.add(movie)
+            if not duplicate_movie:
+                movie.save()
+                genre_to_save.movies.add(movie)
+                print("Added movie: " + str(movie) + " to: " + str(genre) + " relationship") 
+                genre_to_save = Genre.objects.get(genre=genre)
+                genre_to_save.movies.add(movie)
+                user.movies.add(movie)
+                print("Added movie: " + str(movie.original_title) + " to database for user: " + user.username)
+                    
+            elif duplicate_movie:
+                mov = Movie.objects.get(original_title = movie.original_title)
+                movie_owners = mov.customuser_set.all()
+                try: 
+                    movie_owners.get(username=user)
                         
-            return redirect('core:profiles')
+                except (CustomUser.DoesNotExist):
+                    print(mov.original_title + " exists in database but user: " + user.username + " does not own it ")
+                    print("Adding: " + user.username + " to owner!")
+                    user.movies.add(mov)
+                    
+        return redirect('core:profiles')
            
 class ProfileList(View):
     def get(self, request, *args, **kwargs):
@@ -141,9 +154,10 @@ class CreateProfile(View):
 class ProfileHome(View):
     def get(self, request, profile_id, *args, **kwargs):
         if request.user.is_authenticated:
+            user = request.user
             try:
                 profile = Profile.objects.get(uuid = profile_id)
-                movies = Movie.objects.all()
+                movies = user.movies.all()
                 try:
                     show_case = movies.last()
                 except:
