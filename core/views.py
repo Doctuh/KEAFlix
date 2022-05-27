@@ -178,10 +178,14 @@ class MovieDetail(View):
         if request.user.is_authenticated:
             try:
                 movie = Movie.objects.get(uuid = movie_id)
-                return render(request, 'movie_detail.html',{'movie':movie})
+                first_genre = movie.genre_set.first()
+                movies_genre = first_genre.movies.all()[:5]
+                return render(request, 'movie_detail.html',{'movie':movie, 'related_movies':movies_genre})
             except movie.DoesNotExist:
                 redirect(to='core:profileHome')
         return render(request, 'core/index.html')
+
+
 
 class ShowMovie(View):
     def get(self, request, movie_id, *args, **kwargs):
@@ -193,6 +197,8 @@ class ShowMovie(View):
             except movie.DoesNotExist:
                 redirect(to='core:profileHome')
         return render(request, 'core/index.html')
+
+
     
 class GenresList(View):
     def get(self, request, *args, **kwargs):
