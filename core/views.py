@@ -222,23 +222,38 @@ class GenresList(View):
 
 class Search(View):
     def get(self, request, *args, **kwargs):
+        movie_found = False
+        genre_found = False
         if request.user.is_authenticated:    
             search_query =  request.GET.get('search')     
             print("Search query is: " + str(search_query)) 
             try:
                 status = Movie.objects.filter(original_title__contains=search_query)
-                movie_found = True
+                if status.exists():
+                    movie_found = True
+                else:
+                    status = None
+                    movie_found = False
+                    try:
+                        status = Genre.objects.filter(genre__contains=search_query)
+                        if status.exists():
+                            status = status.first()
+                            genre_found = True
+                            movies_found = status.movies.all()
+                            print(status)
+                        else:
+                            status = None
+                            genre_found = False
+                    except Genre.DoesNotExist:
+                        status = None
+            
             except Movie.DoesNotExist:
                 status = None
-            try:
-                status = Genre.objects.filter(genre__contains=search_query)
-                genre_found = True
-            except Genre.DoesNotExist:
-                status = None
-                
+            
+            print(f"Status {status} {movie_found} {genre_found}")   
             if  movie_found:    
-                return render(request,"search.html",{"movies":status})
+                return render(request,"search.html",{"movies":status, "movie_found":movie_found})
             elif genre_found:
-                return render(request,"search.html",{"genres":status})
-        else:
-            return render(request,"search.html",{})
+                return render(request,"search.html",{"genres":movies_found, "genre_found":genre_found})
+        
+        return render(request,"search.html",{"movie_found":movie_found,"genre_found":genre_found})
