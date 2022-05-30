@@ -234,5 +234,5 @@ class Search(View):
                 return render(request,"search.html",{"movies":status, "movie_found":movie_found})
             elif genre_found:
                 return render(request,"search.html",{"genres":movies_found, "genre_found":genre_found})
-        else:
-            return render(request,"search.html",{})
+        
+        return render(request,"search.html",{"movie_found":movie_found,"genre_found":genre_found})

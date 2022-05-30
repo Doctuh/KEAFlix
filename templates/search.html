@@ -58,7 +58,11 @@ Alle film
       </div>
 
     {%endfor%}
+    
+    {% else %}
+    <h1 class="text-center">No movies found!</h1>
     {%endif%}
+
     </header>
 <script>
     const nav = document.querySelector('nav')
