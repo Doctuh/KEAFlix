@@ -18,8 +18,14 @@ def get_movie_id(title):
     response = requests.get(url)
     
     if response.status_code == 200:
+        print(response.status_code)
         json_data = json.loads(response.text)
-        guess_movie_id = json_data['results'][0]['id']
+        print(json_data['total_results'])
+        if json_data['total_results'] == 0:
+            print("Returning None!!!!")
+            return None
+        else:
+            guess_movie_id = json_data['results'][0]['id']
     return guess_movie_id
 
 def get_movie_details(movie_id):
@@ -69,7 +75,11 @@ class UploadMovie(View):
             title = form.cleaned_data['title']
             file = form.cleaned_data['file']
             
-            movie_id = get_movie_id(title)
+            if get_movie_id(title) != None:
+                movie_id = get_movie_id(title)
+            else:
+                return redirect('upload_film')
+            
             description,backdrop_path,original_title,release_date,runtime,vote_average,tagline,genres = get_movie_details(movie_id)
             
             movie = Movie()
@@ -80,7 +90,8 @@ class UploadMovie(View):
             movie.release_date = release_date
             movie.runtime = runtime
             movie.vote_average = vote_average
-            movie.backdrop_path = "https://image.tmdb.org/t/p/original" + backdrop_path
+            if backdrop_path != None:
+                movie.backdrop_path = "https://image.tmdb.org/t/p/original" + backdrop_path
             movie.tagline = tagline
             
             movies = Movie.objects.all()
@@ -92,40 +103,38 @@ class UploadMovie(View):
             
             print("movie dup?: " + str(duplicate_movie))
             
-            if not duplicate_movie:
-                movie.save()
-                user.movies.add(movie)
-                print("Added movie: " + str(movie.original_title) + " to database for user: " + user.username)
-                    
-            elif duplicate_movie:
-                movie = Movie.objects.get(original_title = movie.original_title)
-                movie_owners = movie.customuser_set.all()
-                try: 
-                    movie_owners.get(username=user)
-                        
-                except (CustomUser.DoesNotExist):
-                    print(movie.original_title + " exists in database but user: " + user.username + " does not own it ")
-                    print("Adding: " + user.username + " to owner!")
-                    user.movies.add(movie)
-
-
-
             for genre in genres:
-                if Genre.objects.filter(genre=genre).exists():
+                try:
                     genre_to_save = Genre.objects.get(genre=genre)
-                    genre_to_save.movies.add(movie)
-                    user.movies.add(movie)
-                else:
+                except Genre.DoesNotExist:
                     print(genre + " is not in database, adding an entry for it!")
                     genre_to_save = Genre()
                     genre_to_save.genre = genre
                     genre_to_save.save()
-                    genre_to_save.movies.add(movie)
-                    user.movies.add(movie)
                     print("Added genre: " + str(genre) + " to database")                     
+                    0
                                 
                 print(genre_to_save, genre)
                 
+            if not duplicate_movie:
+                movie.save()
+                genre_to_save.movies.add(movie)
+                print("Added movie: " + str(movie) + " to: " + str(genre) + " relationship") 
+                genre_to_save = Genre.objects.get(genre=genre)
+                genre_to_save.movies.add(movie)
+                user.movies.add(movie)
+                print("Added movie: " + str(movie.original_title) + " to database for user: " + user.username)
+                    
+            elif duplicate_movie:
+                mov = Movie.objects.get(original_title = movie.original_title)
+                movie_owners = mov.customuser_set.all()
+                try: 
+                    movie_owners.get(username=user)
+                        
+                except (CustomUser.DoesNotExist):
+                    print(mov.original_title + " exists in database but user: " + user.username + " does not own it ")
+                    print("Adding: " + user.username + " to owner!")
+                    user.movies.add(mov)
                     
         return redirect('core:profiles')
            
@@ -201,38 +210,23 @@ class GenresList(View):
 
 class Search(View):
     def get(self, request, *args, **kwargs):
-        movie_found = False
-        genre_found = False
         if request.user.is_authenticated:    
             search_query =  request.GET.get('search')     
             print("Search query is: " + str(search_query)) 
             try:
                 status = Movie.objects.filter(original_title__contains=search_query)
-                if status.exists():
-                    movie_found = True
-                else:
-                    status = None
-                    movie_found = False
-                    try:
-                        status = Genre.objects.filter(genre__contains=search_query)
-                        if status.exists():
-                            status = status.first()
-                            genre_found = True
-                            movies_found = status.movies.all()
-                            print(status)
-                        else:
-                            status = None
-                            genre_found = False
-                    except Genre.DoesNotExist:
-                        status = None
-            
+                movie_found = True
             except Movie.DoesNotExist:
                 status = None
-            
-            print(f"Status {status} {movie_found} {genre_found}")   
+            try:
+                status = Genre.objects.filter(genre__contains=search_query)
+                genre_found = True
+            except Genre.DoesNotExist:
+                status = None
+                
             if  movie_found:    
-                return render(request,"search.html",{"movies":status, "movie_found":movie_found})
+                return render(request,"search.html",{"movies":status})
             elif genre_found:
-                return render(request,"search.html",{"genres":movies_found, "genre_found":genre_found})
-        
-        return render(request,"search.html",{"movie_found":movie_found,"genre_found":genre_found})
+                return render(request,"search.html",{"genres":status})
+        else:
+            return render(request,"search.html",{})
