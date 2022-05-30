@@ -11,6 +11,7 @@
 
 {% block body_block %}
     {% include "partials/_navbar.html" %}
+<header style= "background-color:slategray"> 
     <main class='bg-primary_black min-h-screen w-full'>
         <section class="h-screen relative bg-no-repeat pb-8 pl-6 flex  items-end bg-cover" style="background-image:  url('{{movie.backdrop_path}}')">
             <div>
@@ -32,7 +33,7 @@
                 </div>
             </div>
         </section> 
-        <section class='bg-primary_black  min-h-screen flex justify-center py-10'>
+        <section class='min-h-screen flex justify-center py-10'>
             <div class="p-8 w-10/12 relative" >
                 {% if movie.type == 'seasonal' %}
                 <div style='margin-top:2rem;margin-bottom:2rem;'>
@@ -48,14 +49,48 @@
                 <h2 class="text-gray-200 text-3xl font-medium">
                     Description
                 </h2>
-                <div class="flex justify-center  items-center min-w-full  movie_lis">
+                <div class="">
                     <p class="text-gray-100 text-lg">
                         {{movie.description}}   
                     </p>                    
                 </div>
+                <h2 class="text-gray-200 text-3xl font-medium">
+                    Information
+                </h2>
+                <div class="grid justify-center">
+                    <p class="text-gray-100 text-lg">
+                        {{movie.runtime}} minutes  
+                    </p>
+                    <p class="text-gray-100 text-lg">
+                        {{movie.vote_average}}/10 rating  
+                    </p>                       
+                </div>
             </div>
+        </section>
+
+
+
+        <section class=" relative bg-no-repeat pb-8 pl-6 flex  items-end " style="height: 0px;">
+
+            {% for mov in related_movies %}
+            
+            <div class="flex pl-6">
+                <div class="rounded-lg shadow-lg bg-white max-w-sm ">
+                <a href="{% url 'core:show_movie' movie_id=mov.uuid %}">
+                    <img class="rounded-t-lg" src="{{mov.backdrop_path}}" alt=""/>
+                </a>
+                    <div class="p-6">
+                        <h5 class="text-gray-900 text-xl font-medium mb-2">{{mov.original_title}}</h5>
+                        <p class="text-gray-700 text-base mb-4">
+                        {{mov.tagline}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {%endfor%}
         </section>
         
     </main>
-
+</header>
 {% endblock body_block %}
