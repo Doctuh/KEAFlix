@@ -103,38 +103,40 @@ class UploadMovie(View):
             
             print("movie dup?: " + str(duplicate_movie))
             
-            for genre in genres:
-                try:
-                    genre_to_save = Genre.objects.get(genre=genre)
-                except Genre.DoesNotExist:
-                    print(genre + " is not in database, adding an entry for it!")
-                    genre_to_save = Genre()
-                    genre_to_save.genre = genre
-                    genre_to_save.save()
-                    print("Added genre: " + str(genre) + " to database")                     
-                    0
-                                
-                print(genre_to_save, genre)
-                
             if not duplicate_movie:
                 movie.save()
-                genre_to_save.movies.add(movie)
-                print("Added movie: " + str(movie) + " to: " + str(genre) + " relationship") 
-                genre_to_save = Genre.objects.get(genre=genre)
-                genre_to_save.movies.add(movie)
                 user.movies.add(movie)
                 print("Added movie: " + str(movie.original_title) + " to database for user: " + user.username)
                     
             elif duplicate_movie:
-                mov = Movie.objects.get(original_title = movie.original_title)
-                movie_owners = mov.customuser_set.all()
+                movie = Movie.objects.get(original_title = movie.original_title)
+                movie_owners = movie.customuser_set.all()
                 try: 
                     movie_owners.get(username=user)
                         
                 except (CustomUser.DoesNotExist):
-                    print(mov.original_title + " exists in database but user: " + user.username + " does not own it ")
+                    print(movie.original_title + " exists in database but user: " + user.username + " does not own it ")
                     print("Adding: " + user.username + " to owner!")
-                    user.movies.add(mov)
+                    user.movies.add(movie)
+
+
+
+            for genre in genres:
+                if Genre.objects.filter(genre=genre).exists():
+                    genre_to_save = Genre.objects.get(genre=genre)
+                    genre_to_save.movies.add(movie)
+                    user.movies.add(movie)
+                else:
+                    print(genre + " is not in database, adding an entry for it!")
+                    genre_to_save = Genre()
+                    genre_to_save.genre = genre
+                    genre_to_save.save()
+                    genre_to_save.movies.add(movie)
+                    user.movies.add(movie)
+                    print("Added genre: " + str(genre) + " to database")                     
+                                
+                print(genre_to_save, genre)
+                
                     
         return redirect('core:profiles')
            

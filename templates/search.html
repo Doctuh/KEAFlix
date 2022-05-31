@@ -15,7 +15,6 @@ Alle film
     
     {% if movie_found %}
     {% for movie in movies %}
-    
     <div class="flex pl-6">
         <div class="rounded-lg shadow-lg bg-white max-w-sm ">
           <a href="{% url 'core:show_movie' movie_id=movie.uuid %}">

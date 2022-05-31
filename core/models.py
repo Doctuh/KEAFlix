@@ -4,19 +4,8 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
-AGE_CHOICES = (
-    ('Alle', 'Alle'),
-    ('Børn', 'Børn'),
-)
-
-MOVIE_CHOICES = (
-    ('serie', 'Serie'),
-    ('film', 'Film'),
-)
-
 class Profile(models.Model):
     name      = models.CharField(max_length=255)
-    age_limit = models.CharField(max_length=15,choices=AGE_CHOICES)
     uuid      = models.UUIDField(default = uuid.uuid4)
         
 class Movie(models.Model):
@@ -30,12 +19,9 @@ class Movie(models.Model):
     vote_average    = models.CharField(max_length=255, blank = True, null = True)
     tagline         = models.CharField(max_length=255, blank = True, null = True)
     
-    
     created_at  =   models.DateTimeField(auto_now_add=True)
     uuid        =   models.UUIDField(default = uuid.uuid4)
-    type        =   models.CharField(max_length = 10,choices=MOVIE_CHOICES, blank = True,null = True)
     thumbnail   =   models.ImageField(upload_to = 'thumbnails',default='/thumbnails/default_thumbnail.jpg', blank = True,null = True)
-    age_limit   =   models.CharField(max_length = 10, choices=AGE_CHOICES, blank = True,null = True)
     
 class CustomUser(AbstractUser):
     profiles = models.ManyToManyField('Profile',blank=True)
