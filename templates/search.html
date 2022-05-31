@@ -14,6 +14,7 @@ Alle film
     <header class="object-fill bg-cover bg-center min-h-screen max-h-screen showcase border-gray-600 flex justify-center items-center bg-no-repeat"  style="background-image: url('{% static 'index_poster.jpg' %}');">
     
     {% if movie_found %}
+    <div class="grid grid-rows-4 grid-flow-col gap-4">
     {% for movie in movies %}
     <div class="flex pl-6">
         <div class="rounded-lg shadow-lg bg-white max-w-sm ">
@@ -33,9 +34,11 @@ Alle film
         </div>
       </div>
     {%endfor%}
+    </div>
     {%endif%}
 
     {% if genre_found %}
+    <div class="grid grid-rows-4 gap-4">
     {% for mov in genres %}
     
     <div class="flex pl-6">
@@ -57,7 +60,7 @@ Alle film
       </div>
 
     {%endfor%}
-    
+    </div
     {% else %}
     <h1 class="text-center">No movies found!</h1>
     {%endif%}
