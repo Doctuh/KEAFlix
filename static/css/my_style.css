@@ -6,3 +6,7 @@
   #nav.navbar-fixed {
     background-color:rgb(20, 20, 20);
   }
+
+  ion-icon {
+    font-size: 40px; 
+}

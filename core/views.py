@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from core.forms import ProfileForm,MovieForm
 from core.models import Profile, Movie, Genre, CustomUser
+from django.contrib import messages
 import requests
 import json
 
@@ -78,6 +79,7 @@ class UploadMovie(View):
             if get_movie_id(title) != None:
                 movie_id = get_movie_id(title)
             else:
+                messages.info(request, 'No results for movie: ' + title)
                 return redirect('upload_film')
             
             description,backdrop_path,original_title,release_date,runtime,vote_average,tagline,genres = get_movie_details(movie_id)
@@ -137,8 +139,8 @@ class UploadMovie(View):
                                 
                 print(genre_to_save, genre)
                 
-                    
-        return redirect('core:profiles')
+        messages.info(request, 'Your movie has been uploaded successfully!')
+        return redirect('upload_film')
            
 class ProfileList(View):
     def get(self, request, *args, **kwargs):

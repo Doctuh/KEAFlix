@@ -11,12 +11,12 @@ Alle film
 
 {% block body_block %}
     {% include "partials/_navbar.html" %}
-    <header class="object-fill bg-cover bg-center min-h-screen max-h-screen showcase border-gray-600 flex justify-center items-center bg-no-repeat"  style="background-image: url('{% static 'index_poster.jpg' %}');">
+    <header class="object-fill bg-cover bg-center min-h-screen max-h-screen flex justify-center items-center bg-no-repeat"  style="background-image: url('{% static 'index_poster.jpg' %}');">
     
     {% if movie_found %}
-    <div class="grid grid-rows-4 grid-flow-col gap-4">
+    <div class="grid auto-cols-max gap-4 font-mono text-white text-sm text-center font-bold leading-6 bg-stripes-fuchsia rounded-lg">
     {% for movie in movies %}
-    <div class="flex pl-6">
+    <div class="">
         <div class="rounded-lg shadow-lg bg-white max-w-sm ">
           <a href="{% url 'core:show_movie' movie_id=movie.uuid %}">
             <img class="rounded-t-lg" src="{{movie.backdrop_path}}" alt=""/>
@@ -38,10 +38,9 @@ Alle film
     {%endif%}
 
     {% if genre_found %}
-    <div class="grid grid-rows-4 gap-4">
+    <div class="grid auto-cols-max gap-4 font-mono text-white text-sm text-center font-bold leading-6 bg-stripes-fuchsia rounded-lg">
     {% for mov in genres %}
-    
-    <div class="flex pl-6">
+    <div class="">
         <div class="rounded-lg shadow-lg bg-white max-w-sm ">
           <a href="{% url 'core:show_movie' movie_id=mov.uuid %}">
             <img class="rounded-t-lg" src="{{mov.backdrop_path}}" alt=""/>
@@ -59,9 +58,9 @@ Alle film
         </div>
       </div>
 
-    {%endfor%}
-    </div
-    {% else %}
+    {% endfor %}
+    </div>
+    {% elif not genre_found and not movie_found %}
     <h1 class="text-center">No movies found!</h1>
     {%endif%}
 
