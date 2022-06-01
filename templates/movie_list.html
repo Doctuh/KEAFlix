@@ -93,20 +93,18 @@ Alle film
             </div>
         </div>
     </section>
-    <section class="object-fill bg-cover bg-center min-h-screen max-h-screen bg-black opacity-40 items-center bg-no-repeat"  style="background-image: url('{% static 'index_poster.jpg' %}');">
+    <section class="object-fill bg-cover bg-center min-h-screen max-h-screen bg-black items-center bg-no-repeat"  style="background-image: url('{% static 'index_poster.jpg' %}');">
         <div class="p-8 w-10/12 relative">
             <h2 class="text-gray-200 text-2xl font-medium">
                 Popular on MediaM8
             </h2>
-            <div class="flex   items-center min-w-full  movie_lis">
+            <div class="flex items-center min-w-full  movie_lis">
                 {% for movie in movies %}
-                {% if movie.thumbnail.url == True %}
-                <a href="{% url 'core:show_movie' movie_id=movie.uuid %}">
-                    <div class=" h-40 m-4  bg-blue-500 overflow-hidden flex-shrink-0 rounded-md cursor-pointer w-40">
-                        <img src="{{movie.thumbnail.url}}" class="w-full h-full " alt="">
-                    </div>
-                </a>
-                {% endif %}
+                    <a href="{% url 'core:show_movie' movie_id=movie.uuid %}">
+                        <div class=" h-40 m-4  bg-blue-500 overflow-hidden flex-shrink-0 rounded-md cursor-pointer w-40">
+                            <img src="{{movie.backdrop_path}}" class="w-full h-full " alt="">
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
         </div>
