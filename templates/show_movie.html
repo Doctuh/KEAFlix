@@ -16,8 +16,8 @@
     </head>
 
         <script src="https://vjs.zencdn.net/7.19.2/video.min.js"></script>
-        
-        <section class='bg-primary_black  min-h-screen flex justify-center py-10 paddin-top: 50px'>
+        <body style="background-image: url('{% static 'index_poster.jpg' %}'); margin-top:2%;">
+            <section class='bg-primary_black  min-h-screen flex justify-center py-10 paddin-top: 50px'>
             <div class="p-8 w-10/12 relative">
                     <video
                     id="my-video"
@@ -41,5 +41,6 @@
                     </video>
             </div>
         </section>
+    </body>
 
 {% endblock body_block %}

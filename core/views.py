@@ -9,6 +9,7 @@ from core.models import Profile, Movie, Genre, CustomUser
 from django.contrib import messages
 import requests
 import json
+import random
 
 
 
@@ -109,6 +110,8 @@ class UploadMovie(View):
                 movie.save()
                 user.movies.add(movie)
                 print("Added movie: " + str(movie.original_title) + " to database for user: " + user.username)
+                messages.info(request, 'Your movie has been uploaded successfully!',"upload")
+
                     
             elif duplicate_movie:
                 movie = Movie.objects.get(original_title = movie.original_title)
@@ -120,7 +123,7 @@ class UploadMovie(View):
                     print(movie.original_title + " exists in database but user: " + user.username + " does not own it ")
                     print("Adding: " + user.username + " to owner!")
                     user.movies.add(movie)
-
+                    messages.info(request, 'Your movie has been uploaded successfully!',"upload")
 
 
             for genre in genres:
@@ -138,8 +141,7 @@ class UploadMovie(View):
                     print("Added genre: " + str(genre) + " to database")                     
                                 
                 print(genre_to_save, genre)
-                
-        messages.info(request, 'Your movie has been uploaded successfully!')
+        
         return redirect('upload_film')
            
 class ProfileList(View):
@@ -173,6 +175,11 @@ class ProfileHome(View):
             try:
                 profile = Profile.objects.get(uuid = profile_id)
                 movies = user.movies.all()
+                
+                if len(movies) >= 9:
+                    popular_movies = random.sample(list(movies),k=9)
+                else:
+                    popular_movies = movies
                 try:
                     show_case = movies.last()
                 except:
@@ -181,7 +188,7 @@ class ProfileHome(View):
                 if profile not in request.user.profiles.all():
                     return redirect(to='core:profiles')    
                 
-                return render(request, 'movie_list.html', {'movies':movies, 'show_case':show_case})
+                return render(request, 'movie_list.html', {'movies':movies, 'show_case':show_case, 'popular_movies':popular_movies})
             except Profile.DoesNotExist:
                 return redirect(to='core:profiles')
         return render(request, 'core/index.html')

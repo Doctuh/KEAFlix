@@ -33,19 +33,8 @@
                 </div>
             </div>
         </section> 
-        <section class='min-h-screen flex justify-center py-10'>
-            <div class="p-8 w-10/12 relative" >
-                {% if movie.type == 'seasonal' %}
-                <div style='margin-top:2rem;margin-bottom:2rem;'>
-                
-                    <h2 class="text-gray-200 text-3xl font-medium">
-                        Episode
-                    </h2>
-                   
-                
-                </div>
-                {% endif %}
-
+        <section class='min-h-screen flex justify-center py-10 bg-slate-900'style="">
+            <div class="p-8 w-10/12 relative"style="o">
                 <h2 class="text-gray-200 text-3xl font-medium">
                     Description
                 </h2>
@@ -54,10 +43,10 @@
                         {{movie.description}}   
                     </p>                    
                 </div>
-                <h2 class="text-gray-200 text-3xl font-medium">
+                <h2 class="text-gray-200 text-3xl font-medium"style="margin-top:30px;">
                     Information
                 </h2>
-                <div class="grid justify-center">
+                <div class="grid">
                     <p class="text-gray-100 text-lg">
                         {{movie.runtime}} minutes  
                     </p>
@@ -65,31 +54,26 @@
                         {{movie.vote_average}}/10 rating  
                     </p>                       
                 </div>
-            </div>
-        </section>
 
-
-
-        <section class=" relative bg-no-repeat pb-8 pl-6 flex  items-end " style="height: 0px;">
-
-            {% for mov in related_movies %}
-            
-            <div class="flex pl-6">
-                <div class="rounded-lg shadow-lg bg-white max-w-sm ">
-                <a href="{% url 'core:show_movie' movie_id=mov.uuid %}">
-                    <img class="rounded-t-lg" src="{{mov.backdrop_path}}" alt=""/>
-                </a>
-                    <div class="p-6">
-                        <h5 class="text-gray-900 text-xl font-medium mb-2">{{mov.original_title}}</h5>
-                        <p class="text-gray-700 text-base mb-4">
-                        {{mov.tagline}}
-                        </p>
+                <div class="content-center"style="margin-top:30%;">
+                    <h2 class="text-gray-200 text-3xl font-medium text-center" style="height:;">We recommend:</h2>
+                    
+                    <div class="flex min-w-full content-center justify-center">
+                        {% for mov in related_movies %}
+                            <a href="{% url 'core:show_movie' movie_id=mov.uuid %}">
+                                <div class=" h-40 m-4  bg-blue-500 overflow-hidden flex-shrink-0 rounded-md cursor-pointer w-40">
+                                    <img src="{{mov.backdrop_path}}" class="w-full h-full " alt="">
+                                </div>
+                                <h1 class="text-center text-white font-medium mb-2">{{ mov.original_title }}</h1>
+                            </a>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-
-            {%endfor%}
+            
         </section>
+
+        
         
     </main>
 </header>

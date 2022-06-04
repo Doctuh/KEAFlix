@@ -13,18 +13,13 @@ Alle film
     
     <!-- NAVBAR -->
     <nav class="p-5 md:flex md:items-center md:justify-between fixed w-full z-10 top-0" id="nav">
-        <div>
-            <span class="text-2x1 font-[Poppins] cursor-pointer">
-                <a href="{% url 'core:home' %}">
-                    <p class="text-3xl font-mono text-white">MediaM8</p>
-                </a>
-            </span>
-            
-        </div>
+        <a href="{% url 'core:home' %}" class="flex items-center">
+            <img src="{% static 'mediam8_logo.png' %}" class="mr-3 h-2 sm:h-1" alt="MediaM8 Logo"style="height:60px;width:120px;" />
+        </a>
         
         <ul class="md:flex md:items-center">
             {% if request.user.is_authenticated %}
-            <li class="mx-8">
+            <li class="mx-8"style="">
                 <form name="search_form" method = "GET" action="{% url 'core:search' %}">
                     <input type="text" class="bg-gray-200 rounded text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-red-600 transition duration-500", name="search" placeholder="Search for genre or movie">
                         <button class="bg-primary_red text-white py-1 px-2 md:text-lg rounded-md hover:text-red-500 duration-500">
@@ -98,12 +93,13 @@ Alle film
             <h2 class="text-gray-200 text-2xl font-medium">
                 Popular on MediaM8
             </h2>
-            <div class="flex items-center min-w-full  movie_lis">
-                {% for movie in movies %}
-                    <a href="{% url 'core:show_movie' movie_id=movie.uuid %}">
+            <div class="flex items-center min-w-full">
+                {% for pop_movie in popular_movies %}
+                    <a href="{% url 'core:show_movie' movie_id=pop_movie.uuid %}">
                         <div class=" h-40 m-4  bg-blue-500 overflow-hidden flex-shrink-0 rounded-md cursor-pointer w-40">
-                            <img src="{{movie.backdrop_path}}" class="w-full h-full " alt="">
+                            <img src="{{pop_movie.backdrop_path}}" class="w-full h-full " alt="">
                         </div>
+                        <h1 class="text-center text-white font-medium mb-2">{{ pop_movie.original_title }}</h1>
                     </a>
                 {% endfor %}
             </div>
